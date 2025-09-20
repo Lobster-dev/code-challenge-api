@@ -5,7 +5,6 @@ from src.db.mongo import age_groups_collection
 from bson import ObjectId
 
 def create_age_group_service(age_group: AgeGroupSchema) -> AgeGroupSchema:
-    # Verifica se já existe grupo com mesmo nome e faixa
     exists = age_groups_collection.find_one({
         "name": age_group.name,
         "min_age": age_group.min_age,

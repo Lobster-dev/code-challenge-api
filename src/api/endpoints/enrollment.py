@@ -14,7 +14,6 @@ def request_enrollment(enrollment: EnrollmentSchema, username: str = Depends(get
     return request_enrollment_service(enrollment)
 
 
-# Consulta status do enrollment por CPF
 @router.get("/{cpf}", response_model=EnrollmentSchema, status_code=status.HTTP_200_OK)
 def check_enrollment_status_by_cpf(cpf: str, username: str = Depends(get_current_username)):
     return check_enrollment_status_service(cpf)

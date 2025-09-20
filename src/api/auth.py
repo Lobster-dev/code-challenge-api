@@ -4,7 +4,6 @@ import secrets
 
 security = HTTPBasic()
 
-# Usuário e senha fixos para exemplo
 def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = secrets.compare_digest(credentials.username, "admin")
     correct_password = secrets.compare_digest(credentials.password, "admin")
