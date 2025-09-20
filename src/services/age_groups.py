@@ -12,7 +12,7 @@ def create_age_group_service(age_group: AgeGroupSchema) -> AgeGroupSchema:
     })
     if exists:
         raise HTTPException(status_code=400, detail="Grupo já existe.")
-    doc = age_group.dict(exclude_unset=True)
+    doc = age_group.model_dump(exclude_unset=True)
     result = age_groups_collection.insert_one(doc)
     doc["id"] = str(result.inserted_id)
     return AgeGroupSchema(**doc)
