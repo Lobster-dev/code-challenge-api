@@ -9,31 +9,25 @@ load_dotenv()
 security = HTTPBasic()
 
 
-ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
-ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
-USER_USERNAME = os.getenv("USER_USERNAME")
-USER_PASSWORD = os.getenv("USER_PASSWORD")
-
-USERS = {
-    ADMIN_USERNAME: {
-        "password": ADMIN_PASSWORD,
-        "role": "admin"
-    },
-    USER_USERNAME: {
-        "password": USER_PASSWORD,
-        "role": "user"
-    }
-}
-
 def get_current_user(credentials: HTTPBasicCredentials = Depends(security)):
-    user = USERS.get(credentials.username)
-    if not user or not secrets.compare_digest(credentials.password, user["password"]):
+    users = {
+        os.getenv("ADMIN_USERNAME"): {
+            "password": os.getenv("ADMIN_PASSWORD"),
+            "role": "admin"
+        },
+        os.getenv("USER_USERNAME"): {
+            "password": os.getenv("USER_PASSWORD"),
+            "role": "user"
+        }
+    }
+    user_data = users.get(credentials.username)
+    if not user_data or not user_data.get("password") or not secrets.compare_digest(credentials.password, user_data["password"]):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Credenciais inválidas",
             headers={"WWW-Authenticate": "Basic"},
         )
-    return {"username": credentials.username, "role": user["role"]}
+    return {"username": credentials.username, "role": user_data["role"]}
 
 def admin_required(current_user=Depends(get_current_user)):
     if current_user["role"] != "admin":
