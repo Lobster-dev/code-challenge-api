@@ -3,3 +3,7 @@ uvicorn==0.35.0
 pymongo==4.15.1
 boto3==1.40.35
 python-dotenv==1.1.1
+pytest==8.4.2
+httpx==0.28.1
+pytest-mongodb==2.4.0
+mongomock==4.3.0
