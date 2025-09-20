@@ -5,7 +5,7 @@ from .enrollment import router as enrollment_router
 from .health_check import router as health_check_router
 
 public_router = APIRouter()
-private_router = APIRouter()
+private_router = APIRouter(prefix="/api/v1")
 
 public_router.include_router(health_check_router)
 private_router.include_router(age_group_router)
